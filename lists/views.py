@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from lists.models import Item, List
 from django.core.exceptions import ValidationError
-from lists.forms import ItemForm
+from lists.forms import ItemForm, ExistingListItemForm
 
 # Create your views here.
 def home_page(request):
@@ -10,9 +10,9 @@ def home_page(request):
     
 def view_list(request, list_id):
     list_ = List.objects.get(id=list_id)
-    form = ItemForm()
+    form = ExistingListItemForm()
     if request.method == 'POST':
-        form = ItemForm(data=request.POST)
+        form = ExistingListItemForm(data=request.POST)
         if form.is_invalid():
             form.save(for_list=list_)
             return redirect(list_)
